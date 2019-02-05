@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+</head>
+<body>
+<div class="top">
+    <br/>
+    <table width="462">
+        <tr>
+            <th><a href="page1.html">Page 1</a></th>
+            <th><a href="page2.html">Page 2</a></th>
+            <th><a href="page3.html">Page 3</a></th>
+        </tr>
+    </table>
+</div>
+<button type="button" id="btn">Get my fingerprint</button>
+<p>Your browser fingerprint: <strong id="fp"></strong></p>
+
+<script src="js/fingerprint2.js"></script>
+<script>
+    var hasConsole = typeof console !== "undefined"
+    var fingerprintReport = function () {
+      var d1 = new Date()
+      Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+        var d2 = new Date()
+        var time = d2 - d1
+        document.querySelector("#fp").textContent = murmur
+      })
+    }
+
+    var cancelId
+    var cancelFunction
+
+    // see usage note in the README
+    if (window.requestIdleCallback) {
+      cancelId = requestIdleCallback(fingerprintReport)
+      cancelFunction = cancelIdleCallback
+    } else {
+      cancelId = setTimeout(fingerprintReport, 500)
+      cancelFunction = clearTimeout
+    }
+
+    document.querySelector("#btn").addEventListener("click", function () {
+      if (cancelId) {
+        cancelFunction(cancelId)
+        cancelId = undefined
+      }
+      fingerprintReport()
+    })
+  </script>
+</body>
+</html>
