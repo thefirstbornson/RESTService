@@ -14,10 +14,18 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 public class Main {
     private final static String PUBLIC_HTML = "public_html";
 
     public static void main(String[] args) {
+
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
         HandlerList handlerList = new HandlerList();
 
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
@@ -30,8 +38,6 @@ public class Main {
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-//        Resource resource = Resource.newClassPathResource(PUBLIC_HTML);
-//        resourceHandler.setBaseResource(resource);
         resourceHandler.setResourceBase(PUBLIC_HTML);
         ContextHandler staticCtx = new ContextHandler("/start"); /* the server uri path */
         staticCtx.setHandler(resourceHandler);
