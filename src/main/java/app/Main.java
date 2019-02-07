@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.persistence.EntityManager;
@@ -18,7 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class Main {
-    private final static String PUBLIC_HTML = "public_html";
+    private final static String PUBLIC_HTML = "META-INF/public_html";
 
     public static void main(String[] args) {
 
@@ -36,16 +37,12 @@ public class Main {
         serHol.setInitParameter("jersey.config.server.provider.packages",
                 "res");
 
-//        ResourceHandler resourceHandler = new ResourceHandler();
-//        resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-//        resourceHandler.setResourceBase(PUBLIC_HTML);
-//        ContextHandler staticCtx = new ContextHandler("/start"); /* the server uri path */
-//        staticCtx.setHandler(resourceHandler);
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-        resourceHandler.setResourceBase("src/main/resources/public_html");
+
         ContextHandler staticCtx = new ContextHandler("/start"); /* the server uri path */
+        staticCtx.setBaseResource(Resource.newClassPathResource("META-INF/public_html"));
         staticCtx.setHandler(resourceHandler);
 
 
