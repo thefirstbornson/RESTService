@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+    <script src="js/sendjson.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="top">
+    <br/>
+    <table width="462">
+        <tr>
+            <th><a href="page1.html">Page 1</a></th>
+            <th><a href="page2.html">Page 2</a></th>
+            <th><a href="page3.html">Page 3</a></th>
+        </tr>
+        <tr>
+            <th><a href="page4.html">Page 4</a></th>
+            <th><a href="page5.html">Page 5</a></th>
+            <th><a href="page6.html">Page 6</a></th>
+        </tr>
+        <tr>
+            <th><a href="page7.html">Page 7</a></th>
+            <th><a href="page8.html">Page 8</a></th>
+            <th><a href="page9.html">Page 9</a></th>
+        </tr>
+        <tr>
+            <th><a href="page1.html">Statistics</a></th>
+        </tr>
+    </table>
+</div>
+
+<form action="/adduser" method="POST" id="periodform">
+    <p>Введите начало и конец периода в формате dd-MM-yyyy</p>
+    <table width="462">
+        <tr>
+            <th>Период</a></th>
+            <th>с <input type="text" name="from"/></th>
+            <th> по <input type="text" name="to"/></th>
+        </tr>
+    </table>
+</form>
+<button type="submit" class="a_submit"onclick="sendMessage();">Подтвердить</button>
+
+<p>Количество посещений за период: <strong id="fp"></strong></p>
+<p>Количество уникальный пользователей за период: <strong id="numusr"></strong></p>
+<p>Количество постоянных пользователей за период: <strong id="numloyal"></strong></p>
+
+<script src="js/fingerprint2.js"></script>
+<script>
+      Fingerprint2.get(function(components) {
+        murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+          var xhr = new XMLHttpRequest();
+          var url = "/msg";
+          xhr.open("POST", url, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          var currentdate = new Date();
+          var datetime =  currentdate.getDate() + "-"
+              + (currentdate.getMonth()+1)  + "-"
+              + currentdate.getFullYear() + " "
+              + currentdate.getHours() + ":"
+              + currentdate.getMinutes() + ":"
+              + currentdate.getSeconds();
+
+          var data = JSON.stringify({"visitor":murmur,"url": document.URL,"visitTimeStamp":datetime});
+          xhr.send(data);
+      })
+  </script>
+</body>
+</html>

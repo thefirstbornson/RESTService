@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+</head>
+<body>
+<div class="top">
+    <br/>
+    <table width="462">
+        <tr>
+            <th><a href="page1.html">Page 1</a></th>
+            <th><a href="page2.html">Page 2</a></th>
+            <th><a href="page3.html">Page 3</a></th>
+        </tr>
+        <tr>
+            <th><a href="page4.html">Page 4</a></th>
+            <th><a href="page5.html">Page 5</a></th>
+            <th><a href="page6.html">Page 6</a></th>
+        </tr>
+        <tr>
+            <th><a href="page7.html">Page 7</a></th>
+            <th><a href="page8.html">Page 8</a></th>
+            <th><a href="page9.html">Page 9</a></th>
+        </tr>
+        <tr>
+            <th><a href="statistics.html">Statistics</a></th>
+        </tr>
+    </table>
+</div>
+<p></p>
+<p></p>
+<p></p>
+
+<p>Количество посещений за сутки: <strong id="cntvst"></strong></p>
+<p>Количество уникальный пользователей за сутки: <strong id="numusr"></strong></p>
+
+<script src="js/fingerprint2.js"></script>
+<script>
+      Fingerprint2.get(function(components) {
+        murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+          var xhr = new XMLHttpRequest();
+          var url = "/msg";
+          xhr.open("POST", url, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  obj = JSON.parse(xhr.response);
+                  document.querySelector("#cntvst").textContent =obj.cntvst;
+                  document.querySelector("#numusr").textContent =obj.cntusr;
+              }
+          };
+          var currentdate = new Date();
+          var datetime =  currentdate.getDate() + "-"
+              + (currentdate.getMonth()+1)  + "-"
+              + currentdate.getFullYear() + " "
+              + currentdate.getHours() + ":"
+              + currentdate.getMinutes() + ":"
+              + currentdate.getSeconds();
+
+          var data = JSON.stringify({"visitor":murmur,"url": document.URL,"visitTimeStamp":datetime});
+          xhr.send(data);
+      })
+
+  </script>
+</body>
+</html>

@@ -11,7 +11,6 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.persistence.EntityManager;
@@ -23,7 +22,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
+        //EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.h2");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         HandlerList handlerList = new HandlerList();
@@ -36,9 +36,15 @@ public class Main {
         serHol.setInitParameter("jersey.config.server.provider.packages",
                 "res");
 
+//        ResourceHandler resourceHandler = new ResourceHandler();
+//        resourceHandler.setWelcomeFiles(new String[] { "index.html" });
+//        resourceHandler.setResourceBase(PUBLIC_HTML);
+//        ContextHandler staticCtx = new ContextHandler("/start"); /* the server uri path */
+//        staticCtx.setHandler(resourceHandler);
+
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setWelcomeFiles(new String[] { "index.html" });
-        resourceHandler.setResourceBase(PUBLIC_HTML);
+        resourceHandler.setResourceBase("src/main/resources/public_html");
         ContextHandler staticCtx = new ContextHandler("/start"); /* the server uri path */
         staticCtx.setHandler(resourceHandler);
 
