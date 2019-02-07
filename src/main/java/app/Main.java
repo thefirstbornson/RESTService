@@ -23,8 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.h2");
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         HandlerList handlerList = new HandlerList();
