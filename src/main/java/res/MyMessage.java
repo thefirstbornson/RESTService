@@ -33,17 +33,14 @@ public class MyMessage {
         try {
             Object obj = parser.parse(jsonString);
             JSONObject jsonObj = (JSONObject) obj;
-            Date date =  simpleDateFormat.parse((String)jsonObj.get("visitTimeStamp"));
-            visit = new Visit(new Visitor("fsdf4234sa")
-                          ,new URL((String) jsonObj.get("url"))
-                          ,date );
+            visit = new Visit(new Visitor((String) jsonObj.get("visitor"))
+                             ,new URL((String) jsonObj.get("url"))
+                             ,simpleDateFormat.parse((String)jsonObj.get("visitTimeStamp")) );
         } catch (ParseException | java.text.ParseException e) {
             e.printStackTrace();
         }
 
-
-
-        return jsonString;
+        return visit.toString();
     }
 
 }

@@ -11,6 +11,7 @@ public class Visit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "visitor_id", nullable = false)
     private Visitor visitor;
@@ -61,5 +62,15 @@ public class Visit {
 
     public void setVisiTimeStamp(Date visiTimeStamp) {
         this.visitTimeStamp = visiTimeStamp;
+    }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "id=" + id +
+                ", visitor=" + visitor +
+                ", url=" + url +
+                ", visitTimeStamp=" + visitTimeStamp +
+                '}';
     }
 }

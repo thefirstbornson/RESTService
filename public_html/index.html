@@ -39,7 +39,7 @@
               + currentdate.getMinutes() + ":"
               + currentdate.getSeconds();
 
-          var data = JSON.stringify({"url": document.URL,"visitTimeStamp":datetime});
+          var data = JSON.stringify({"vistor":murmur,"url": document.URL,"visitTimeStamp":datetime});
           xhr.send(data);
       })
 
