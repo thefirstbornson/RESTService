@@ -1,10 +1,12 @@
 package dao;
 
+import dao.*;
 import org.junit.Before;
 import org.junit.Test;
 import res.URL;
 import res.Visit;
 import res.Visitor;
+import utl.DateUtil;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -26,7 +28,7 @@ public class VisitDAOImplTest {
     VisitorDao visitorDao;
 
     public VisitDAOImplTest() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.mysql");
+        entityManagerFactory = Persistence.createEntityManagerFactory("project.jpa.hibernate.h2");
         visitDAO = new VisitDaoImpl(entityManagerFactory);
         urlDao = new URLDaoImpl(entityManagerFactory);
         visitorDao = new VisitorDaoImpl(entityManagerFactory);
@@ -35,7 +37,7 @@ public class VisitDAOImplTest {
     @Before
     public void initialize() {
         visit = new VisitDAOImplTest().createVisit();
-        System.out.println(visit.getId());
+        visitDAO.persist(visit);
     }
 
     @Test
@@ -51,7 +53,7 @@ public class VisitDAOImplTest {
             e.printStackTrace();
         }
         long i = visitDAO.getNumberOfVisits(start, finish);
-        assertEquals("Неверное количество", 8,  i);
+        assertEquals("Неверное количество", 1,  i);
     }
 
     @Test
@@ -67,7 +69,7 @@ public class VisitDAOImplTest {
             e.printStackTrace();
         }
         long i = visitDAO.getNumberOfUsers(start, finish);
-        assertEquals("Неверное количество", 4,  i);
+        assertEquals("Неверное количество", 1,  i);
         System.out.println(i);
     }
 
@@ -83,27 +85,46 @@ public class VisitDAOImplTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long i = visitDAO.getNumberOfLoyalUsers(start, finish,2);
-        assertEquals("Неверное количество", 2,  i);
+        String str = "https://valve.github.io/fin";;
+        for (int x = 0; x < 10; x++){
+            visitDAO.persist(createVisit(str));
+            str =str+x;
+        }
+
+        long i = visitDAO.getNumberOfLoyalUsers(start, finish,1);
+        assertEquals("Неверное количество", 1,  i);
         System.out.println(i);
     }
+
     @Test
     public void persistVisitTest() {
 
-        Visit persistedVisit = (Visit) visitDAO.persist(visit);
-        Visit returnedVisit = (Visit) visitDAO.getByPK(Visit.class,persistedVisit.getId());
-        assertEquals("Неверное количество", persistedVisit.getId(),  returnedVisit.getId());
+        //Visit persistedVisit = (Visit) visitDAO.persist(visit);
+        Visit returnedVisit = (Visit) visitDAO.getByPK(Visit.class,1);
+        assertEquals("Возвращено неверное значение", 1,  returnedVisit.getId());
     }
 
     private Visit createVisit()  {
-        Date date = new Date();
+        return createVisit("https://valve.github.io/finis");
+    }
 
-        URL url = urlDao.getByURL("https://valve.github.io/finish");
-        if (url==null) url = new URL("https://valve.github.io/finish");
+    private Visit createVisit(String urlStr){
+        String pattern = "dd-MM-yyyy HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse("06-02-2019 12:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        URL url = urlDao.getByURL(urlStr);
+        if (url==null) url = new URL(urlStr);
 
         Visitor visitor = visitorDao.getByUserIdentStr("123454b8aab33163ce0498ff7fc89587");
         if (visitor==null) visitor = new Visitor("123454b8aab33163ce0498ff7fc89587");
 
         return new Visit(visitor,url,date);
     }
+
 }

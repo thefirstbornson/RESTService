@@ -13,10 +13,27 @@
             <th><a href="page2.html">Page 2</a></th>
             <th><a href="page3.html">Page 3</a></th>
         </tr>
+        <tr>
+            <th><a href="page4.html">Page 4</a></th>
+            <th><a href="page5.html">Page 5</a></th>
+            <th><a href="page6.html">Page 6</a></th>
+        </tr>
+        <tr>
+            <th><a href="page7.html">Page 7</a></th>
+            <th><a href="page8.html">Page 8</a></th>
+            <th><a href="page9.html">Page 9</a></th>
+        </tr>
+        <tr>
+            <th><a href="statistics.html">Statistics</a></th>
+        </tr>
     </table>
 </div>
-<button type="button" id="btn">Get my fingerprint</button>
-<p>Your browser fingerprint: <strong id="fp"></strong></p>
+<p></p>
+<p></p>
+<p></p>
+
+<p>Количество посещений за сутки: <strong id="cntvst"></strong></p>
+<p>Количество уникальный пользователей за сутки: <strong id="numusr"></strong></p>
 
 <script src="js/fingerprint2.js"></script>
 <script>
@@ -28,7 +45,9 @@
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.onreadystatechange = function () {
               if (xhr.readyState === 4 && xhr.status === 200) {
-                  document.querySelector("#fp").textContent =xhr.response;
+                  obj = JSON.parse(xhr.response);
+                  document.querySelector("#cntvst").textContent =obj.cntvst;
+                  document.querySelector("#numusr").textContent =obj.cntusr;
               }
           };
           var currentdate = new Date();
@@ -39,31 +58,10 @@
               + currentdate.getMinutes() + ":"
               + currentdate.getSeconds();
 
-          var data = JSON.stringify({"vistor":murmur,"url": document.URL,"visitTimeStamp":datetime});
+          var data = JSON.stringify({"visitor":murmur,"url": document.URL,"visitTimeStamp":datetime});
           xhr.send(data);
       })
 
-    //}
-
-    // var cancelId
-    // var cancelFunction
-    //
-    // // see usage note in the README
-    // if (window.requestIdleCallback) {
-    //   cancelId = requestIdleCallback(fingerprintReport)
-    //   cancelFunction = cancelIdleCallback
-    // } else {
-    //   cancelId = setTimeout(fingerprintReport, 500)
-    //   cancelFunction = clearTimeout
-    // }
-    //
-    // document.querySelector("#btn").addEventListener("click", function () {
-    //   if (cancelId) {
-    //     cancelFunction(cancelId)
-    //     cancelId = undefined
-    //   }
-    //   fingerprintReport()
-    //})
   </script>
 </body>
 </html>

@@ -20,7 +20,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="seniorproject.jpa.hibernate.h2" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="project.jpa.hibernate.h2" transaction-type="RESOURCE_LOCAL">
         <properties>
             <property name="hibernate.dialect" value ="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.format_sql" value = "true"/>

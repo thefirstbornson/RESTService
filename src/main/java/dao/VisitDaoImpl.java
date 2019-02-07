@@ -50,8 +50,8 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao{
         Root<Visit> visitRoot = criteria.from( Visit.class );
         criteria.select(visitRoot.get("visitor"));
         criteria.where( builder.between(visitRoot.get("visitTimeStamp").as(Date.class), start, finish) );
-        criteria.groupBy(visitRoot.get("url"));
-        criteria.having(builder.ge(builder.count(visitRoot.get("visitor")), numberOfPages));
+        criteria.groupBy(visitRoot.get("visitor"));
+        criteria.having(builder.ge(builder.count(visitRoot.get("url")), numberOfPages));
 
         Long cnt = (long) em.createQuery( criteria ).getResultList().size();
         em.close();
