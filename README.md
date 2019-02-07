@@ -1,21 +1,37 @@
 README
-This README describes the jj-server app, a simple embedded Java REST web server, based on Jetty & Jersey.
+Тестовое задание Java
+Требуется реализовать REST-сервис по сбору статистики посещаемости WEB-сайта.
+Сервис должен поддерживать два метода:
+1. Создание события посещения сайта пользователем. Параметры:
+a. Идентификатор пользователя
+b. Идентификатор страницы сайта
+Ответ должен содержать (в формате JSON):
+a. Общее количество посещений за текущие сутки
+b. Количество уникальных пользователей за текущие сутки
+2. Получение статистики посещения за произвольный период. Параметр запроса:
+a. период учёта
+Ответ должен содержать (в формате JSON):
+a. Общее количество посещений за указанный период
+b. Количество уникальных пользователей за указанный период
+c. Количество постоянных пользователей за указанный период
+(пользователей, которые за период просмотрели не менее 10 различных
+страниц).
 
+В качестве хранилища информации можно использовать любую СУБД.
+Авторизации в сервисе не требуется.
 
-What is jj-server?
-jj-server is a starting point for a micro-service java web server. It is
+Запуск
+1. В качестве СУБД используется Mysql.
+1.1 Настройки подключения (localhost):
+  порт - 3306
+  пользователь - dbuser
+  пароль - T2Y42ZWG72y859N
+База создается запуске приложения
 
-based on Jetty & Jersey
-should support static content, servlet, and REST APIs.
-should be really easy to host an AngularJS app, a ReactJS app, or a RestAPI server.
-
-How to run?
+2. Запуск
 mvn clean package
+java -jar target/java -jar RESTService.jar
 
-java -jar target/jj-server-1.0-SNAPSHOT.jar
+3. Для доступа к сервису ввести в браузере:
+http://localhost:8090/start/
 
-Point browser to:
-
-http://localhost:6060/static should return static html/css/js
-
-http://localhost:6060/test is handled by REST controllers
